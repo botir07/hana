@@ -1,0 +1,33 @@
+# FILE_INFO_DB
+
+## Files
+- main.py: Entry point for the Qt application. Changed: created initial application bootstrap.
+- ui\\__init__.py: UI package marker. Changed: created package init.
+- ui\\main_window.py: Main UI window, chat handling, and action flow. Changed: created UI controller.
+- ui\\confirm_dialog.py: Confirmation dialog helper. Changed: created confirmation utility.
+- core\\__init__.py: Core package marker. Changed: created package init.
+- core\\agent.py: OpenRouter client and JSON parsing. Changed: created agent module.
+- core\\safety.py: Path validation and risk detection. Changed: created safety rules.
+- core\\executor.py: Action dispatch and logging to SQLite. Changed: created executor.
+- core\\config.py: Environment and path configuration. Changed: created config loader.
+- tools\\__init__.py: Tools package marker. Changed: created package init.
+- tools\\file_tools.py: File operations with safe delete. Changed: created file tools.
+- tools\\system_tools.py: App launching and path opening. Changed: created system tools.
+- docs\\SERVICE_DOC.md: Service overview and architecture. Changed: created documentation.
+- docs\\FILE_INFO_DB.md: File catalog and change log. Changed: created documentation.
+- docs\\TRACKER.md: Project tracker. Changed: created tracker.
+- docs\\ACTION_REPORT.md: Action log for file and function changes. Changed: created action report.
+- ui\\main_window.py: Main UI window, chat handling, and action flow. Changed: removed unused Qt import.
+- core\\safety.py: Path validation and risk detection. Changed: removed unused Config import.
+- requirements.txt: Python dependencies list. Changed: created requirements file.
+- core\\agent.py: OpenRouter client and JSON parsing. Changed: added API key getters/setter.
+- core\\config.py: Environment and path configuration. Changed: added API key persistence to .env.
+- ui\\main_window.py: Main UI window, chat handling, and action flow. Changed: prompt for API key before sending.
+- core\\agent.py: OpenRouter client and JSON parsing. Changed: added fallback import path handling for direct execution.
+- core\\agent.py: OpenRouter client and JSON parsing. Changed: added JSON extraction fallback for non-strict responses.
+- core\\safety.py: Path validation and risk detection. Changed: added known folder resolution for relative paths.
+- core\\executor.py: Action dispatch and logging to SQLite. Changed: normalize file paths before dispatch.
+- core\\agent.py: OpenRouter client and JSON parsing. Changed: added file.create_folder to action schema.
+- core\\safety.py: Path validation and risk detection. Changed: allow create_folder when target does not exist.
+- core\\executor.py: Action dispatch and logging to SQLite. Changed: dispatch file.create_folder to file_tools.
+- tools\\file_tools.py: File operations with safe delete. Changed: added create_folder.

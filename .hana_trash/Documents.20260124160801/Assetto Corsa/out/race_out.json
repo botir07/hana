@@ -1,0 +1,27 @@
+
+{
+	"track": "shuto_revival_project_beta-main_layout",
+	"number_of_sessions": 1,
+	"players": [
+		{
+			"name": "log.inf",
+			"car": "ks_maserati_quattroporte",
+			"skin": "00_champagne"
+		}],
+	"sessions": [
+		{
+			"event": 0,
+			"name": "Practice",
+			"type": 1,
+			"lapsCount": 0,
+			"duration": 0,
+			"laps": [],
+			"lapstotal": [0],
+			"bestLaps": []
+		}],
+	"extras": [
+		{
+			"name": "bestlap",
+			"time": 0
+		}]
+}

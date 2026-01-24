@@ -1,0 +1,252 @@
+1/17/2026 4:03:31 PM 
+Skipped MoveUGC
+1: IGNOREDPI
+ PID: 10560
+
+AC Launcher ver. 0.18.115.5097
+Running on: Microsoft Windows NT 6.2.9200.0 x64
+Searching for .config at: AssettoCorsa.exe -> C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\AssettoCorsa.exe.Config
+Current Culture: en-US / en-US
+Length:1
+assembly loading: Steamworks.NET.dll
+Loading C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\support\Steamworks.NET.dll
+assembly loading: CEF3.dll
+Loading C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\support\CEF3.dll
+Initializing Steam: True.
+Steam ID: 76561199489776973
+assembly loading: AC.CEF3.dll
+Loading C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\support\AC.CEF3.dll
+OnBeforeCommandLineProcessing - switches: 25 - args: 0
+bwsi
+content-image-texture-target=3553,3553,3553,3553,3553,3553,3553,3553,3553,3553,3553,3553,3553,3553
+disable-backing-store-limit
+disable-cast
+disable-dhcp-wpad
+disable-extensions
+disable-gpu
+disable-gpu-compositing
+disable-renderer-accessibility
+disable-spell-checking
+enable-direct-write
+enable-widevine-cdm
+font-cache-shared-handle=1468
+force-device-scale-factor=1
+js-flags="--expose-gc"
+lang=en-US
+log-file=C:\Users\world\Documents\Assetto Corsa\logs\launcher_debug.log
+log-severity=info
+no-proxy-server
+no-sandbox
+num-raster-threads=2
+remote-debugging-port=30150
+user-agent=Assetto Corsa Launcher
+video-image-texture-target=3553
+winhttp-proxy-resolver
+MainProcess
+App Language set to: 
+Locale Dictionary Refresh
+App Language set to: en
+Locale Dictionary Initialized
+Hardware acceleration: True
+App Language set to: 
+1/17/2026 4:03:36 PM : Create main window
+assembly loading: SlimDX.dll
+Loading C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\support\SlimDX.dll
+1/17/2026 4:03:39 PM : Themes found:
+1/17/2026 4:03:39 PM : 	Assetto Corsa v.0.19.0130.5100  *
+1/17/2026 4:03:39 PM : Set to fullscreen
+Showing main window
+1/17/2026 4:03:40 PM : WPF in software mode
+1/17/2026 4:03:40 PM : Browser Attached
+1/17/2026 4:03:40 PM : lu: about:blank
+1/17/2026 4:03:40 PM : Browser not set
+1/17/2026 4:03:40 PM : Unable to load about:blank
+1/17/2026 4:03:40 PM : Type:Normal
+No controllers with assigned controls defined in controls.ini
+Steam callback timer active
+ls: about:blank
+le: about:blank
+1/17/2026 4:03:41 PM : _browserControl added
+1/17/2026 4:03:42 PM : Intro Complete
+1/17/2026 4:03:42 PM : >>>C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\default
+1/17/2026 4:03:42 PM : lu: file:///C:/Program Files (x86)/Steam/steamapps/common/assettocorsa/launcher/themes/default/video/player.html?video=file%3a%2f%2f%2fC%3a%2fProgram+Files+(x86)%2fSteam%2fsteamapps%2fcommon%2fassettocorsa%2flauncher%2fthemes%2fdefault%2fvideo%2fintro.ogv&volume=0.5
+ls: file:///C:/Program%20Files%20(x86)/Steam/steamapps/common/assettocorsa/launcher/themes/default/video/player.html?video=file%3a%2f%2f%2fC%3a%2fProgram+Files+(x86)%2fSteam%2fsteamapps%2fcommon%2fassettocorsa%2flauncher%2fthemes%2fdefault%2fvideo%2fintro.ogv&volume=0.5 *
+1/17/2026 4:03:42 PM : \\.\DISPLAY1 0 / 1920
+1/17/2026 4:03:42 PM : Width limited: 2560
+1/17/2026 4:03:42 PM : Current screen: 1920 x 1080
+1/17/2026 4:03:42 PM : GetWindowRect: 0 x 0 -- 0,0,0,0
+1/17/2026 4:03:42 PM : Window 1920/1920 x 1080/1080 (1/1)
+1/17/2026 4:03:42 PM : Resize 1920/1920 x 1080/1080 (1/1)
+1/17/2026 4:03:42 PM : Starting theme engine
+Requesthandler Steam API: True
+1/17/2026 4:03:42 PM : Received forcetotheme
+1/17/2026 4:03:42 PM : Viewing theme
+1/17/2026 4:03:42 PM : _bC: 1920x1080 1920x1080 - True
+le: file:///C:/Program%20Files%20(x86)/Steam/steamapps/common/assettocorsa/launcher/themes/default/video/player.html?video=file%3a%2f%2f%2fC%3a%2fProgram+Files+(x86)%2fSteam%2fsteamapps%2fcommon%2fassettocorsa%2flauncher%2fthemes%2fdefault%2fvideo%2fintro.ogv&volume=0.5 *
+1/17/2026 4:03:42 PM : \\.\DISPLAY1 0 / 1920
+1/17/2026 4:03:42 PM : Width limited: 2560
+1/17/2026 4:03:42 PM : Current screen: 1920 x 1080
+1/17/2026 4:03:42 PM : GetWindowRect: 1920 x 1080 -- 0,1920,1080,0
+1/17/2026 4:03:42 PM : Window 1920/1920 x 1080/1080 (1/1)
+1/17/2026 4:03:42 PM : Resize 1920/1920 x 1080/1080 (1/1)
+1/17/2026 4:03:42 PM : BHS
+1/17/2026 4:03:42 PM : Dispatcher invoked: file:///C:/Program%20Files%20(x86)/Steam/steamapps/common/assettocorsa/launcher/themes/default/video/player.html?video=file%3a%2f%2f%2fC%3a%2fProgram+Files+(x86)%2fSteam%2fsteamapps%2fcommon%2fassettocorsa%2flauncher%2fthemes%2fdefault%2fvideo%2fintro.ogv&volume=0.5
+1/17/2026 4:03:42 PM : Loading theme URL: False
+1/17/2026 4:03:42 PM : Dispatcher operation completed.
+1/17/2026 4:03:49 PM : lu: file:///C:/Program%20Files%20(x86)/Steam/steamapps/common/assettocorsa/launcher/themes/default/index.html
+ls: ac://home
+ls: file:///C:/Program%20Files%20(x86)/Steam/steamapps/common/assettocorsa/launcher/themes/default/index.html *
+1/17/2026 4:03:49 PM : \\.\DISPLAY1 0 / 1920
+1/17/2026 4:03:49 PM : Width limited: 2560
+1/17/2026 4:03:49 PM : Current screen: 1920 x 1080
+1/17/2026 4:03:49 PM : GetWindowRect: 1920 x 1080 -- 0,1920,1080,0
+1/17/2026 4:03:49 PM : Window 1920/1920 x 1080/1080 (1/1)
+1/17/2026 4:03:49 PM : Resize 1920/1920 x 1080/1080 (1/1)
+1/17/2026 4:03:49 PM : Starting theme engine
+le: file:///C:/Program%20Files%20(x86)/Steam/steamapps/common/assettocorsa/launcher/themes/default/index.html *
+1/17/2026 4:03:49 PM : Dispatcher invoked: file:///C:/Program%20Files%20(x86)/Steam/steamapps/common/assettocorsa/launcher/themes/default/index.html
+1/17/2026 4:03:49 PM : Loading theme URL: True
+1/17/2026 4:03:49 PM : Including default JS libraries
+1/17/2026 4:03:49 PM : Loading script C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\.base\init.js (156573)
+1/17/2026 4:03:49 PM : Loading script C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\.base\jquery-1.9.1.js (277978)
+1/17/2026 4:03:50 PM : Loading script C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\.base\jquery.easing.js (9336)
+1/17/2026 4:03:50 PM : Loading script C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\.base\jquery.flot.js (106797)
+1/17/2026 4:03:50 PM : Loading script C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\.base\jquery.selectbox.js (15469)
+1/17/2026 4:03:50 PM : Loading script C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\.base\jquery.stickyfloat.js (6728)
+1/17/2026 4:03:50 PM : Loading script C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\.base\jquery.ui.js (448297)
+1/17/2026 4:03:50 PM : Loading script C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\.base\ac.utils.js (28706)
+1/17/2026 4:03:50 PM : Loading script C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\.base\__ACClasses.js (12937)
+1/17/2026 4:03:50 PM : Loading script C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\.base\__AC.js (18411)
+1/17/2026 4:03:50 PM : Loading script C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\launcher\themes\.base\__ACUI.js (2093)
+1/17/2026 4:03:50 PM : \\.\DISPLAY1 0 / 1920
+1/17/2026 4:03:50 PM : Width limited: 2560
+1/17/2026 4:03:50 PM : Current screen: 1920 x 1080
+1/17/2026 4:03:50 PM : GetWindowRect: 1920 x 1080 -- 0,1920,1080,0
+1/17/2026 4:03:50 PM : Window 1920/1920 x 1080/1080 (1/1)
+1/17/2026 4:03:50 PM : Resize 0/0 x 0/0 (1/1)
+1/17/2026 4:03:50 PM : Loading game data
+1/17/2026 4:03:50 PM : Dispatcher operation completed.
+1/17/2026 4:03:50 PM : * Loading track metadata
+1/17/2026 4:03:50 PM : * Loading car metadata
+1/17/2026 4:03:50 PM : * Initializing
+1/17/2026 4:03:51 PM : * Loaded 44 tracks
+1/17/2026 4:03:52 PM : * Loading car metadata 55%
+1/17/2026 4:03:53 PM : * Loaded 180 cars
+1/17/2026 4:03:53 PM : * Initializing UI
+1/17/2026 4:03:53 PM : * Loading content
+1/17/2026 4:03:53 PM : * Populating lists
+1/17/2026 4:03:53 PM : * Populating car lists
+1/17/2026 4:03:53 PM : * Problems with cars: ks_ferrari_488_challenge_evo,ks_ferrari_488_gt3_2020,ks_lamborghini_countach_s1,ks_lamborghini_gallardo_sl_s3 .json file missing or invalid
+1/17/2026 4:03:53 PM : * Populating brand lists
+1/17/2026 4:03:53 PM : * Populating track lists
+1/17/2026 4:03:53 PM : * Populating track meta data
+1/17/2026 4:03:53 PM : * Populating track countries
+1/17/2026 4:03:53 PM : * Populating car tags
+1/17/2026 4:03:53 PM : * Populating favorites
+1/17/2026 4:03:53 PM : * Setting defaults
+1/17/2026 4:03:54 PM : \\.\DISPLAY1 0 / 1920
+1/17/2026 4:03:54 PM : Width limited: 2560
+1/17/2026 4:03:54 PM : Current screen: 1920 x 1080
+1/17/2026 4:03:54 PM : GetWindowRect: 0 x 0 -- 0,0,0,0
+1/17/2026 4:03:54 PM : Window 1920/1920 x 1080/1080 (1/1)
+1/17/2026 4:03:54 PM : Resize 1920/1920 x 1080/1080 (1/1)
+Available Video Modes
+1: 640 x 480 @ 60Hz
+2: 640 x 480 @ 60Hz
+3: 640 x 480 @ 144Hz
+4: 640 x 480 @ 144Hz
+5: 800 x 600 @ 60Hz
+6: 800 x 600 @ 60Hz
+7: 800 x 600 @ 144Hz
+8: 800 x 600 @ 144Hz
+9: 1024 x 768 @ 60Hz
+10: 1024 x 768 @ 60Hz
+11: 1024 x 768 @ 144Hz
+12: 1024 x 768 @ 144Hz
+13: 1128 x 634 @ 60Hz
+14: 1128 x 634 @ 60Hz
+15: 1128 x 634 @ 144Hz
+16: 1128 x 634 @ 144Hz
+17: 1280 x 720 @ 60Hz
+18: 1280 x 720 @ 60Hz
+19: 1280 x 720 @ 144Hz
+20: 1280 x 720 @ 144Hz
+21: 1280 x 1024 @ 60Hz
+22: 1280 x 1024 @ 60Hz
+23: 1280 x 1024 @ 144Hz
+24: 1280 x 1024 @ 144Hz
+25: 1366 x 768 @ 60Hz
+26: 1366 x 768 @ 60Hz
+27: 1366 x 768 @ 144Hz
+28: 1366 x 768 @ 144Hz
+29: 1600 x 900 @ 60Hz
+30: 1600 x 900 @ 60Hz
+31: 1600 x 900 @ 144Hz
+32: 1600 x 900 @ 144Hz
+33: 1680 x 1050 @ 60Hz
+34: 1680 x 1050 @ 60Hz
+35: 1680 x 1050 @ 144Hz
+36: 1680 x 1050 @ 144Hz
+37: 1760 x 990 @ 60Hz
+38: 1760 x 990 @ 60Hz
+39: 1760 x 990 @ 144Hz
+40: 1760 x 990 @ 144Hz
+41: 1920 x 1080 @ 60Hz
+42: 1920 x 1080 @ 144Hz
+Listing files for C:\Users\world\Documents\Assetto Corsa\\cfg\ppfilters\
+Listing files for C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\\system\cfg\ppfilters\
+1/17/2026 4:03:54 PM : * Loading modules
+1/17/2026 4:03:55 PM : * Background loading special events
+1/17/2026 4:03:55 PM : * Initializing modules
+1/17/2026 4:03:55 PM : * Applying localization - neutral
+1/17/2026 4:03:55 PM : * UI Initialized
+1/17/2026 4:03:55 PM : Received UIReady
+1/17/2026 4:03:55 PM : Monitoring for: acs.exe
+1/17/2026 4:03:55 PM : UI Ready at: 1/17/2026 4:03:55 PM
+1/17/2026 4:04:02 PM : * Loaded 203 special events
+1/17/2026 4:04:02 PM : * Background loading career events
+1/17/2026 4:04:02 PM : * Synchronizing Steam achievements
+Locale Dictionary Refresh
+App Language set to: en
+Locale Dictionary Refresh
+1/17/2026 4:04:12 PM : Viewing theme
+1/17/2026 4:04:12 PM : _bC: 1920x1080 1920x1080 - True
+1/17/2026 4:04:40 PM >> acs start call
+1/17/2026 4:04:40 PM >> acs spawner 
+1/17/2026 4:04:40 PM : >> NoResize
+1/17/2026 4:04:43 PM : 1/17/2026 4:04:43 PM !>> acs.exe active
+1/17/2026 4:04:43 PM : 1920 / VSW: 1920 / W: 1920
+1/17/2026 4:04:44 PM : Could not connect named pipe.
+1/17/2026 4:06:21 PM : 1/17/2026 4:06:21 PM !>> acs.exe stopped
+1/17/2026 4:06:21 PM : 1920 / VSW: 1920 / W: 1920
+1/17/2026 4:06:21 PM : Regaining focus
+1/17/2026 4:06:21 PM : OSC - Returned from session: ignoring resize request. W: 160
+1/17/2026 4:06:21 PM : OSC - Returned from session: ignoring resize request. W: 1920
+Listing files for C:\Users\world\Documents\Assetto Corsa\\cfg\ppfilters\
+Listing files for C:\Program Files (x86)\Steam\steamapps\common\assettocorsa\\system\cfg\ppfilters\
+1/17/2026 4:06:21 PM : \\.\DISPLAY1 0 / 1920
+1/17/2026 4:06:21 PM : Width limited: 2560
+1/17/2026 4:06:21 PM : Current screen: 1920 x 1080
+1/17/2026 4:06:21 PM : GetWindowRect: 1920 x 1080 -- 0,1920,1080,0
+1/17/2026 4:06:21 PM : Window 1920/1920 x 1080/1080 (1/1)
+1/17/2026 4:06:21 PM : Resize 1920/1920 x 1080/1080 (1/1)
+1/17/2026 4:06:24 PM : 1/17/2026 4:06:24 PM > exit *
+1/17/2026 4:06:24 PM : 1/17/2026 4:06:24 PM > exit 1
+1/17/2026 4:06:24 PM : 1/17/2026 4:06:24 PM > exit 1.1
+1/17/2026 4:06:24 PM : 1/17/2026 4:06:24 PM > exit 1.2
+1/17/2026 4:06:24 PM : 1/17/2026 4:06:24 PM > exit 1.3
+1/17/2026 4:06:24 PM : 1/17/2026 4:06:24 PM > exit 1.4
+1/17/2026 4:06:24 PM : 1/17/2026 4:06:24 PM > exit 2
+1/17/2026 4:06:24 PM : 1/17/2026 4:06:24 PM > exit 2.1
+1/17/2026 4:06:24 PM : 1/17/2026 4:06:24 PM > exit 2.2
+1/17/2026 4:06:24 PM : 1/17/2026 4:06:24 PM > exit 2.3
+1/17/2026 4:06:24 PM : 1/17/2026 4:06:24 PM > exit 2.4
+1/17/2026 4:06:24 PM : BHS - Returned from session: ignoring resize request. W: 1920
+1/17/2026 4:06:26 PM : Return from session timer end.
+1/17/2026 4:06:31 PM : Credits sequence complete
+1/17/2026 4:06:31 PM : Shutdown
+1/17/2026 4:06:31 PM : Close requested
+1/17/2026 4:06:31 PM : Closing window
+OnExit
+Shutting down Steam API connection (oe)
+1/17/2026 4:06:31 PM > app exit

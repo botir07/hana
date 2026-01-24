@@ -1,0 +1,45 @@
+# Disk DescriptorFile
+version=1
+encoding="windows-1251"
+CID=fffffffe
+parentCID=ffffffff
+createType="twoGbMaxExtentSparse"
+
+# Extent description
+RW 8323072 SPARSE "Other-s001.vmdk"
+RW 8323072 SPARSE "Other-s002.vmdk"
+RW 8323072 SPARSE "Other-s003.vmdk"
+RW 8323072 SPARSE "Other-s004.vmdk"
+RW 8323072 SPARSE "Other-s005.vmdk"
+RW 8323072 SPARSE "Other-s006.vmdk"
+RW 8323072 SPARSE "Other-s007.vmdk"
+RW 8323072 SPARSE "Other-s008.vmdk"
+RW 8323072 SPARSE "Other-s009.vmdk"
+RW 8323072 SPARSE "Other-s010.vmdk"
+RW 8323072 SPARSE "Other-s011.vmdk"
+RW 8323072 SPARSE "Other-s012.vmdk"
+RW 8323072 SPARSE "Other-s013.vmdk"
+RW 8323072 SPARSE "Other-s014.vmdk"
+RW 8323072 SPARSE "Other-s015.vmdk"
+RW 8323072 SPARSE "Other-s016.vmdk"
+RW 8323072 SPARSE "Other-s017.vmdk"
+RW 8323072 SPARSE "Other-s018.vmdk"
+RW 8323072 SPARSE "Other-s019.vmdk"
+RW 8323072 SPARSE "Other-s020.vmdk"
+RW 8323072 SPARSE "Other-s021.vmdk"
+RW 8323072 SPARSE "Other-s022.vmdk"
+RW 8323072 SPARSE "Other-s023.vmdk"
+RW 8323072 SPARSE "Other-s024.vmdk"
+RW 8323072 SPARSE "Other-s025.vmdk"
+RW 1638400 SPARSE "Other-s026.vmdk"
+
+# The Disk Data Base 
+#DDB
+
+ddb.adapterType = "ide"
+ddb.geometry.cylinders = "16383"
+ddb.geometry.heads = "16"
+ddb.geometry.sectors = "63"
+ddb.longContentID = "cdc65a311386e1d41a87a743fffffffe"
+ddb.uuid = "60 00 C2 93 c1 7c cd 73-35 96 cf fe 4f 7e 3f 23"
+ddb.virtualHWVersion = "22"
