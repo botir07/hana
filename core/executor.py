@@ -61,4 +61,6 @@ class Executor:
             return system_tools.launch_app(args["target"], args.get("args", []))
         if action == "system.open_path":
             return system_tools.open_path(normalize_path(args["path"]))
+        if action == "system.open_url":
+            return system_tools.open_url(args)
         raise ValueError(f"Unknown action: {action}")

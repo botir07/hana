@@ -2,6 +2,7 @@ import json
 import os
 import re
 import sys
+import urllib.error
 import urllib.request
 
 try:
@@ -22,6 +23,10 @@ class Agent:
         self._config.save_api_key(api_key)
         self._config.api_key = api_key
 
+    def set_model(self, model: str) -> None:
+        self._config.save_model(model)
+        self._config.model = model
+
     def process_text(self, text: str) -> dict:
         if not self._config.api_key:
             return {"type": "reply", "message": "OPENROUTER_API_KEY is not set."}
@@ -35,8 +40,10 @@ class Agent:
                         "You are HANA, a local desktop assistant. "
                         "Return only strict JSON. "
                         "Schema: {\"type\":\"reply\",\"message\":\"...\"} "
-                        "or {\"type\":\"action\",\"action\":\"file.open|file.rename|file.move|file.delete|file.create_folder|system.launch|system.open_path\","
-                        "\"args\":{...},\"message\":\"...\"}."
+                        "or {\"type\":\"action\",\"action\":\"file.open|file.rename|file.move|file.delete|file.create_folder|system.launch|system.open_path|system.open_url\","
+                        "\"args\":{...},\"message\":\"...\"}. "
+                        "Use system.open_url with {\"url\":\"https://...\"} to open sites "
+                        "or search with {\"query\":\"...\"}."
                     ),
                 },
                 {"role": "user", "content": text},
@@ -54,8 +61,34 @@ class Agent:
             method="POST",
         )
 
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            error_body = ""
+            try:
+                error_body = exc.read().decode("utf-8")
+            except Exception:
+                error_body = ""
+            if exc.code == 401:
+                return {
+                    "type": "reply",
+                    "message": "Unauthorized: check your OpenRouter API key.",
+                }
+            if exc.code == 402:
+                return {
+                    "type": "reply",
+                    "message": "Payment required: check OpenRouter credits or model access.",
+                }
+            if exc.code == 404:
+                return {
+                    "type": "reply",
+                    "message": f"HTTP 404: model not found ({self._config.model}). Set a valid OpenRouter model.",
+                }
+            detail = f"HTTP error: {exc.code}"
+            if error_body:
+                detail = f"{detail} - {error_body}"
+            return {"type": "reply", "message": detail}
 
         content = data["choices"][0]["message"]["content"]
         parsed = self._parse_json(content)

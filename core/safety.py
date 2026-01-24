@@ -74,4 +74,10 @@ def assess_action(action: str, args: dict) -> tuple[bool, bool, str]:
             return False, False, "Target is in a protected directory."
         return True, False, "OK"
 
+    if action == "system.open_url":
+        url = args.get("url") or args.get("query")
+        if not url:
+            return False, False, "Missing url or query argument."
+        return True, False, "OK"
+
     return False, False, f"Unknown action: {action}"

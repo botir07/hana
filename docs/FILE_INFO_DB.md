@@ -31,3 +31,28 @@
 - core\\safety.py: Path validation and risk detection. Changed: allow create_folder when target does not exist.
 - core\\executor.py: Action dispatch and logging to SQLite. Changed: dispatch file.create_folder to file_tools.
 - tools\\file_tools.py: File operations with safe delete. Changed: added create_folder.
+- ui\\avatar_view.py: Qt3D widget for rendering the avatar model. Changed: created 3D view.
+- ui\\main_window.py: Main UI window, chat handling, and action flow. Changed: embedded 3D avatar and status text.
+- ui\\avatar_view.py: Qt3D widget for rendering the avatar model. Changed: added Qt3D availability fallback.
+- requirements.txt: Python dependencies list. Changed: pinned PySide6 and added PySide6-Addons.
+- requirements.txt: Python dependencies list. Changed: updated PySide6 versions for Python 3.14.
+- ui\\avatar_view.py: Qt3D widget for rendering the avatar model. Changed: migrated to QtQuick3D view.
+- ui\\avatar_view.qml: QML scene for rendering and animating the 3D model. Changed: created QML scene file.
+- ui\\main_window.py: Main UI window, chat handling, and action flow. Changed: added menu action for API key.
+- ui\\avatar_view.qml: QML scene for rendering and animating the 3D model. Changed: fixed camera properties for QtQuick3D.
+- main.py: Entry point for the Qt application. Changed: launch avatar window with hidden chat overlay.
+- ui\\main_window.py: Main UI window, chat handling, and action flow. Changed: converted to transparent chat overlay window.
+- ui\\avatar_window.py: Separate avatar window with context menu. Changed: created avatar window.
+- ui\\main_window.py: Main UI window, chat handling, and action flow. Changed: added draggable overlay behavior.
+- core\\agent.py: OpenRouter client and JSON parsing. Changed: improved HTTP error handling for 401.
+- ui\\main_window.py: Main UI window, chat handling, and action flow. Changed: added minimize and quit controls.
+- ui\\main_window.py: Main UI window, chat handling, and action flow. Changed: close button hides overlay only.
+- core\\agent.py: OpenRouter client and JSON parsing. Changed: added system.open_url schema and 402 handling.
+- core\\safety.py: Path validation and risk detection. Changed: allow system.open_url validation.
+- core\\executor.py: Action dispatch and logging to SQLite. Changed: dispatch system.open_url.
+- tools\\system_tools.py: App launching and path opening. Changed: added open_url with search support.
+- core\\config.py: Environment and path configuration. Changed: default model set to free tier model.
+- core\\agent.py: OpenRouter client and JSON parsing. Changed: improved HTTP error details for model errors.
+- core\\config.py: Environment and path configuration. Changed: added model persistence to .env.
+- core\\agent.py: OpenRouter client and JSON parsing. Changed: added model setter for UI updates.
+- ui\\main_window.py: Main UI window, chat handling, and action flow. Changed: added model setting menu action.

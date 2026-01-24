@@ -10,3 +10,16 @@
 - 2026-01-24: Added JSON extraction fallback handling in core/agent.py.
 - 2026-01-24: Added known folder resolution for relative paths and normalized dispatch paths.
 - 2026-01-24: Added file.create_folder action support and tool implementation.
+- 2026-01-24: Added 3D avatar view widget and integrated it into the main window layout.
+- 2026-01-24: Added Qt3D availability fallback and updated dependencies for avatar rendering.
+- 2026-01-24: Updated PySide6 versions to match Python 3.14 compatibility.
+- 2026-01-24: Switched avatar rendering to QtQuick3D and added API key menu action.
+- 2026-01-24: Fixed QtQuick3D camera property usage in avatar_view.qml.
+- 2026-01-24: Added separate avatar window with chat overlay toggled from context menu.
+- 2026-01-24: Added drag handling for the transparent chat overlay window.
+- 2026-01-24: Added chat window controls and improved 401 handling for OpenRouter.
+- 2026-01-24: Chat close button now hides overlay without quitting avatar.
+- 2026-01-24: Added system.open_url support and improved 402 handling.
+- 2026-01-24: Switched default OpenRouter model to a free tier model.
+- 2026-01-24: Improved HTTP error messages for missing models.
+- 2026-01-24: Added UI support for setting OpenRouter model and saving to .env.
