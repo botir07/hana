@@ -1,5 +1,6 @@
 from PySide6.QtCore import QThread, Signal
-from PySide6.QtCore import Qt, QPoint
+import os
+
 from PySide6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -9,15 +10,13 @@ from PySide6.QtWidgets import (
     QPushButton,
     QMessageBox,
     QInputDialog,
-    QToolButton,
-    QMenu,
-    QHBoxLayout,
     QLabel,
-    QApplication,
+    QHBoxLayout,
 )
 
 from core.agent import Agent
 from core.executor import Executor
+from ui.avatar_view import AvatarView
 from ui.confirm_dialog import ConfirmDialog
 
 
@@ -41,17 +40,10 @@ class AgentWorker(QThread):
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle("HANA Chat")
-        self.setWindowFlags(
-            Qt.Window
-            | Qt.FramelessWindowHint
-            | Qt.WindowStaysOnTopHint
-        )
-        self.setAttribute(Qt.WA_TranslucentBackground, True)
+        self.setWindowTitle("HANA")
         self._agent = Agent()
         self._executor = Executor()
         self._worker = None
-        self._drag_offset = QPoint()
 
         self._chat = QTextEdit()
         self._chat.setReadOnly(True)
@@ -63,66 +55,27 @@ class MainWindow(QMainWindow):
         self._send_btn = QPushButton("Send")
         self._send_btn.clicked.connect(self._on_send)
 
-        menu_btn = QToolButton()
-        menu_btn.setText("Settings")
-        menu = QMenu(menu_btn)
-        set_key_action = menu.addAction("Set OpenRouter API Key")
-        set_key_action.triggered.connect(self._on_set_api_key)
-        set_model_action = menu.addAction("Set OpenRouter Model")
-        set_model_action.triggered.connect(self._on_set_model)
-        menu_btn.setMenu(menu)
-        menu_btn.setPopupMode(QToolButton.InstantPopup)
+        left_layout = QVBoxLayout()
+        left_layout.addWidget(self._chat)
+        left_layout.addWidget(self._input)
+        left_layout.addWidget(self._send_btn)
 
-        header = QHBoxLayout()
-        title = QLabel("HANA Chat")
-        title.setStyleSheet("color: white; font-weight: 600;")
-        header.addWidget(menu_btn)
-        header.addWidget(title)
-        header.addStretch(1)
-        min_btn = QPushButton("-")
-        min_btn.setFixedWidth(24)
-        min_btn.clicked.connect(self.showMinimized)
-        close_btn = QPushButton("x")
-        close_btn.setFixedWidth(24)
-        close_btn.clicked.connect(self.hide)
-        header.addWidget(min_btn)
-        header.addWidget(close_btn)
+        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        model_path = os.path.join(base_dir, "assets", "anime+girl+3d+model.glb")
+        self._avatar = AvatarView(model_path)
+        self._status = QLabel("HANA ready.")
+        self._status.setWordWrap(True)
 
-        content_layout = QVBoxLayout()
-        content_layout.addLayout(header)
-        content_layout.addWidget(self._chat)
-        content_layout.addWidget(self._input)
-        content_layout.addWidget(self._send_btn)
+        right_layout = QVBoxLayout()
+        right_layout.addWidget(self._avatar)
+        right_layout.addWidget(self._status)
 
-        card = QWidget()
-        card.setObjectName("chatCard")
-        card.setLayout(content_layout)
-
-        outer = QVBoxLayout()
-        outer.addWidget(card)
+        layout = QHBoxLayout()
+        layout.addLayout(left_layout, 3)
+        layout.addLayout(right_layout, 2)
 
         container = QWidget()
-        container.setLayout(outer)
-        container.setStyleSheet(
-            "#chatCard {"
-            "background-color: rgba(30, 30, 30, 220);"
-            "border: 1px solid rgba(255, 255, 255, 40);"
-            "border-radius: 10px;"
-            "padding: 8px;"
-            "}"
-            "QTextEdit, QLineEdit {"
-            "background-color: rgba(45, 45, 45, 220);"
-            "color: white;"
-            "border: 1px solid rgba(255, 255, 255, 40);"
-            "border-radius: 6px;"
-            "}"
-            "QPushButton {"
-            "background-color: rgba(70, 70, 70, 220);"
-            "color: white;"
-            "border-radius: 6px;"
-            "padding: 6px;"
-            "}"
-        )
+        container.setLayout(layout)
         self.setCentralWidget(container)
 
     def _set_busy(self, busy: bool) -> None:
@@ -131,15 +84,20 @@ class MainWindow(QMainWindow):
 
     def _append_chat(self, role: str, message: str) -> None:
         self._chat.append(f"{role}: {message}")
+        if role == "HANA":
+            self._status.setText(message)
 
     def _on_send(self) -> None:
         text = self._input.text().strip()
         if not text:
             return
         if not self._agent.has_api_key():
-            if not self._prompt_api_key():
+            api_key, ok = QInputDialog.getText(self, "OpenRouter API Key", "Enter OpenRouter API key:")
+            api_key = api_key.strip()
+            if not ok or not api_key:
                 QMessageBox.warning(self, "Missing API Key", "OpenRouter API key is required to continue.")
                 return
+            self._agent.set_api_key(api_key)
         self._input.clear()
         self._append_chat("User", text)
         self._set_busy(True)
@@ -181,53 +139,3 @@ class MainWindow(QMainWindow):
             outcome = self._executor.execute_action(action, args, confirmed=True)
 
         self._append_chat("HANA", outcome.get("message", "Action completed."))
-
-    def _on_set_api_key(self) -> None:
-        if self._prompt_api_key():
-            QMessageBox.information(self, "API Key", "OpenRouter API key saved.")
-
-    def _on_set_model(self) -> None:
-        model, ok = QInputDialog.getText(
-            self,
-            "OpenRouter Model",
-            "Enter OpenRouter model id:",
-        )
-        model = model.strip()
-        if ok and model:
-            self._agent.set_model(model)
-            QMessageBox.information(self, "Model", "OpenRouter model saved.")
-
-    def _prompt_api_key(self) -> bool:
-        api_key, ok = QInputDialog.getText(
-            self,
-            "OpenRouter API Key",
-            "Enter OpenRouter API key:",
-            QLineEdit.Password,
-        )
-        api_key = api_key.strip()
-        if not ok or not api_key:
-            return False
-        self._agent.set_api_key(api_key)
-        return True
-
-    def toggle_visible(self) -> None:
-        if self.isVisible():
-            self.hide()
-        else:
-            self.show()
-            self.raise_()
-            self.activateWindow()
-
-    def mousePressEvent(self, event) -> None:
-        if event.button() == Qt.LeftButton:
-            self._drag_offset = event.globalPosition().toPoint() - self.frameGeometry().topLeft()
-            event.accept()
-        else:
-            super().mousePressEvent(event)
-
-    def mouseMoveEvent(self, event) -> None:
-        if event.buttons() & Qt.LeftButton:
-            self.move(event.globalPosition().toPoint() - self._drag_offset)
-            event.accept()
-        else:
-            super().mouseMoveEvent(event)
