@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<Foundry>
-<VM>
-<VMId type="string">52 5c 63 bf 33 b0 ee b5-57 46 92 44 4b 2d 4c 57</VMId>
-<ClientMetaData>
-<clientMetaDataAttributes/>
-<HistoryEventList/></ClientMetaData>
-<vmxPathName type="string">macOS-Ventura.vmx</vmxPathName></VM><tools-install-info><installError>0</installError><updateCounter>7</updateCounter></tools-install-info></Foundry>

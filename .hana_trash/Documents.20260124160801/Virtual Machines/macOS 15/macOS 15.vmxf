@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<Foundry>
-<VM>
-<VMId type="string">52 ba 4d 95 1a e2 e7 c3-f7 a4 8e 00 f7 86 e3 ca</VMId>
-<ClientMetaData>
-<clientMetaDataAttributes/>
-<HistoryEventList/></ClientMetaData>
-<vmxPathName type="string">macOS 15.vmx</vmxPathName></VM><tools-install-info><installError>0</installError><updateCounter>2</updateCounter></tools-install-info></Foundry>
