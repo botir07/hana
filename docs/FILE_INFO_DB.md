@@ -56,3 +56,18 @@
 - core\\config.py: Environment and path configuration. Changed: added model persistence to .env.
 - core\\agent.py: OpenRouter client and JSON parsing. Changed: added model setter for UI updates.
 - ui\\main_window.py: Main UI window, chat handling, and action flow. Changed: added model setting menu action.
+- ui\\avatar_view.py: Panda3D avatar view widget. Changed: added singleton handling to prevent multiple instances.
+- ui\\avatar_view.py: Panda3D avatar view widget. Changed: tuned camera, lighting, and background.
+- ui\\avatar_view.py: Panda3D avatar view widget. Changed: added automatic model fit and centering.
+- ui\\avatar_view.py: Panda3D avatar view widget. Changed: enabled shader auto, animation attempt, and bobbing motion.
+- main.py: Entry point for the Qt application. Changed: removed avatar window hook to avoid missing method error.
+- ui\\avatar_view.py: Panda3D avatar view widget. Changed: added step guard and reduced tick rate.
+- core\\agent.py: OpenRouter client and JSON parsing. Changed: updated system prompt to AIRI persona and action schema.
+- ui\\main_window.py: Chat overlay window. Changed: rebuilt overlay UI, added TTS, and avatar state hooks.
+- ui\\avatar_view.py: Panda3D avatar view widget. Changed: added right-click menu and reaction state controls.
+- ui\\avatar_window.py: Avatar controller window. Changed: added TTS/menu callbacks and quit handling.
+- main.py: Entry point for the Qt application. Changed: reconnected avatar window for state updates and hid controller window.
+- requirements.txt: Python dependencies list. Changed: added edge-tts, playsound, and panda3d.
+- ui\\main_window.py: Chat overlay window. Changed: removed unused QApplication import.
+- ui\\avatar_view.py: Panda3D avatar view widget. Changed: set avatar window to topmost via Win32 API.
+- ui\\avatar_view.py: Panda3D avatar view widget. Changed: boosted lighting and applied fallback material.

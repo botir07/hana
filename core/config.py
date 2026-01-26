@@ -8,6 +8,7 @@ class Config:
         self.api_key = os.environ.get("OPENROUTER_API_KEY", "")
         self.model = os.environ.get("OPENROUTER_MODEL", "mistralai/mistral-7b-instruct:free")
         self.api_url = os.environ.get("OPENROUTER_API_URL", "https://openrouter.ai/api/v1/chat/completions")
+        self.tts_voice = os.environ.get("EDGE_TTS_VOICE", "ru-RU-SvetlanaNeural")
         self.db_path = os.path.join(base_dir, "hana.db")
         self.trash_dir = os.path.join(base_dir, ".hana_trash")
 

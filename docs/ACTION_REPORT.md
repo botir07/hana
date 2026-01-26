@@ -23,3 +23,16 @@
 - 2026-01-24: Switched default OpenRouter model to a free tier model.
 - 2026-01-24: Improved HTTP error messages for missing models.
 - 2026-01-24: Added UI support for setting OpenRouter model and saving to .env.
+- 2026-01-24: Added Panda3D singleton handling to avoid multiple ShowBase instances.
+- 2026-01-24: Improved Panda3D avatar window lighting, camera, and background.
+- 2026-01-24: Added automatic model fit for Panda3D avatar display.
+- 2026-01-24: Added shader auto, animation loop attempt, and bobbing motion for Panda3D avatar.
+- 2026-01-24: Removed unused avatar window hook from main startup to prevent AttributeError.
+- 2026-01-24: Added step reentrancy guard and reduced Panda3D tick rate.
+- 2026-01-24: Updated system prompt to AIRI persona and clarified action JSON schema.
+- 2026-01-24: Rebuilt chat overlay UI, added TTS, and hooked avatar reaction states.
+- 2026-01-24: Added Panda3D right-click menu and reaction state controls.
+- 2026-01-24: Updated dependencies for TTS and Panda3D support.
+- 2026-01-24: Cleaned unused QApplication import in ui/main_window.py.
+- 2026-01-24: Added topmost window handling for the Panda3D avatar.
+- 2026-01-24: Boosted Panda3D lighting and applied fallback material for darker models.
