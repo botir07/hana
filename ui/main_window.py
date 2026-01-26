@@ -44,6 +44,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("AIRI Chat")
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setAttribute(Qt.WA_TranslucentBackground, True)
+        self.setWindowOpacity(0.92)
 
         self._agent = Agent()
         self._config = Config()
@@ -108,19 +109,19 @@ class MainWindow(QMainWindow):
         container.setLayout(outer)
         container.setStyleSheet(
             "#chatCard {"
-            "background-color: rgba(24, 24, 26, 220);"
+            "background-color: rgba(24, 24, 26, 150);"
             "border: 1px solid rgba(255, 255, 255, 40);"
             "border-radius: 10px;"
             "padding: 8px;"
             "}"
             "QTextEdit, QLineEdit {"
-            "background-color: rgba(40, 40, 44, 220);"
+            "background-color: rgba(40, 40, 44, 170);"
             "color: white;"
             "border: 1px solid rgba(255, 255, 255, 40);"
             "border-radius: 6px;"
             "}"
             "QPushButton, QToolButton {"
-            "background-color: rgba(70, 70, 70, 220);"
+            "background-color: rgba(70, 70, 70, 180);"
             "color: white;"
             "border-radius: 6px;"
             "padding: 6px;"

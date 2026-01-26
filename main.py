@@ -9,8 +9,7 @@ def main() -> int:
     chat_window = MainWindow()
     chat_window.hide()
     avatar_window = AvatarWindow(chat_window)
-    chat_window.set_avatar_window(avatar_window)
-    avatar_window.hide()
+    avatar_window.show()
     return app.exec()
 
 
