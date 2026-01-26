@@ -6,7 +6,8 @@ class Config:
         self._load_env()
         base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         self.api_key = os.environ.get("OPENROUTER_API_KEY", "")
-        self.model = os.environ.get("OPENROUTER_MODEL", "mistralai/mistral-7b-instruct:free")
+        # Fixed free model for chat; ignore any OPENROUTER_MODEL overrides.
+        self.model = "meta-llama/llama-3.2-3b-instruct:free"
         self.api_url = os.environ.get("OPENROUTER_API_URL", "https://openrouter.ai/api/v1/chat/completions")
         self.tts_voice = os.environ.get("EDGE_TTS_VOICE", "ru-RU-SvetlanaNeural")
         self.db_path = os.path.join(base_dir, "hana.db")

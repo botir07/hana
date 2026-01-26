@@ -3,6 +3,7 @@ import os
 import builtins
 import ctypes
 import math
+import time
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QWidget, QVBoxLayout
 
@@ -57,6 +58,8 @@ class _PandaApp(ShowBase):
         self._last_cursor = None
         self._cam_dist = 5.5
         self._rbutton_down = False
+        self._menu_lock_until = 0.0
+        self._ctrl_down = False
 
         # Offscreen buffer yaratib, keyin Qtga berish murakkabroq.
         # Shuning uchun eng tez MVP: Panda3D alohida oynada render qiladi.
@@ -108,7 +111,9 @@ class _PandaApp(ShowBase):
         self.accept("mouse1-up", self._on_drag_end)
         self.accept("wheel_up", self._zoom_in)
         self.accept("wheel_down", self._zoom_out)
-        self.accept("mouse3", self._toggle_menu)
+        self.accept("mouse3", self._show_system_menu)
+        self.accept("control", self._on_ctrl_down)
+        self.accept("control-up", self._on_ctrl_up)
 
     def _set_topmost(self) -> None:
         try:
@@ -150,13 +155,30 @@ class _PandaApp(ShowBase):
             WS_THICKFRAME = 0x00040000
             WS_MINIMIZE = 0x20000000
             WS_MAXIMIZEBOX = 0x00010000
+            WS_SYSMENU = 0x00080000
             LWA_COLORKEY = 0x00000001
             ex_style = ctypes.windll.user32.GetWindowLongW(self._hwnd, GWL_EXSTYLE)
             ex_style = (ex_style | WS_EX_LAYERED | WS_EX_TOOLWINDOW) & ~WS_EX_TRANSPARENT
             ctypes.windll.user32.SetWindowLongW(self._hwnd, GWL_EXSTYLE, ex_style)
             style = ctypes.windll.user32.GetWindowLongW(self._hwnd, GWL_STYLE)
             style &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZE | WS_MAXIMIZEBOX)
+            style |= WS_SYSMENU
             ctypes.windll.user32.SetWindowLongW(self._hwnd, GWL_STYLE, style)
+            # Apply style changes so Windows creates a system menu.
+            SWP_NOMOVE = 0x0002
+            SWP_NOSIZE = 0x0001
+            SWP_NOZORDER = 0x0004
+            SWP_NOACTIVATE = 0x0010
+            SWP_FRAMECHANGED = 0x0020
+            ctypes.windll.user32.SetWindowPos(
+                self._hwnd,
+                0,
+                0,
+                0,
+                0,
+                0,
+                SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED,
+            )
             # Make magenta fully transparent; keep dark colors intact.
             ctypes.windll.user32.SetLayeredWindowAttributes(self._hwnd, 0x00FF00FF, 0, LWA_COLORKEY)
         except Exception:
@@ -330,6 +352,10 @@ class _PandaApp(ShowBase):
 
     def _poll_right_click(self):
         # Fallback when the window is transparent and doesn't receive mouse events.
+        if not self._hwnd:
+            self._update_hwnd()
+        if not self._hwnd:
+            return
         VK_RBUTTON = 0x02
         state = ctypes.windll.user32.GetAsyncKeyState(VK_RBUTTON)
         down = (state & 0x8000) != 0
@@ -339,13 +365,13 @@ class _PandaApp(ShowBase):
             if rect and pos:
                 left, top, right, bottom = rect
                 if left <= pos[0] <= right and top <= pos[1] <= bottom:
-                    self._toggle_menu()
+                    self._show_system_menu()
         self._rbutton_down = down
 
     def step(self):
+        self._poll_right_click()
         if self.model:
             self.tilt = (self.tilt + 2.0) % 360.0
-            self._poll_right_click()
             if self._dragging:
                 pos = self._get_cursor_pos()
                 if pos:
@@ -373,8 +399,6 @@ class _PandaApp(ShowBase):
 
     def _toggle_menu(self) -> None:
         if self._menu:
-            self._menu.destroy()
-            self._menu = None
             return
         from direct.gui.DirectGui import DirectFrame, DirectButton
         pos = self._get_menu_pos()
@@ -390,7 +414,7 @@ class _PandaApp(ShowBase):
             scale=0.05,
             pos=(100, 0, -35),
             frameColor=(0.15, 0.15, 0.18, 1.0),
-            command=self._on_chat,
+            command=self._on_menu_chat,
         )
         DirectButton(
             parent=self._menu,
@@ -398,8 +422,109 @@ class _PandaApp(ShowBase):
             scale=0.05,
             pos=(100, 0, -70),
             frameColor=(0.15, 0.15, 0.18, 1.0),
-            command=self._on_quit,
+            command=self._on_menu_exit,
         )
+
+    def _maybe_toggle_menu(self) -> None:
+        now = time.monotonic()
+        if now < self._menu_lock_until:
+            return
+        self._menu_lock_until = now + 0.2
+        self._toggle_menu()
+
+    def _show_system_menu(self) -> None:
+        if not self._ctrl_down:
+            return
+        now = time.monotonic()
+        if now < self._menu_lock_until:
+            return
+        self._menu_lock_until = now + 0.2
+        if not self._hwnd:
+            self._update_hwnd()
+        if not self._hwnd:
+            return
+        pos = self._get_cursor_pos()
+        if not pos:
+            return
+        x, y = pos
+        try:
+            hmenu = ctypes.windll.user32.GetSystemMenu(self._hwnd, False)
+            menu_owned = False
+            if not hmenu:
+                # Build a minimal system-style menu when Windows doesn't provide one.
+                hmenu = ctypes.windll.user32.CreatePopupMenu()
+                if not hmenu:
+                    return
+                menu_owned = True
+                MF_STRING = 0x0000
+                MF_SEPARATOR = 0x0800
+                SC_RESTORE = 0xF120
+                SC_MOVE = 0xF010
+                SC_SIZE = 0xF000
+                SC_MINIMIZE = 0xF020
+                SC_MAXIMIZE = 0xF030
+                SC_CLOSE = 0xF060
+                ID_CHAT = 0x1001
+                ID_EXIT = 0x1002
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_STRING, SC_RESTORE, "Restore")
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_STRING, SC_MOVE, "Move")
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_STRING, SC_SIZE, "Size")
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_STRING, SC_MINIMIZE, "Minimize")
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_STRING, SC_MAXIMIZE, "Maximize")
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_SEPARATOR, 0, None)
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_STRING, ID_CHAT, "Chat")
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_STRING, ID_EXIT, "Exit")
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_SEPARATOR, 0, None)
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_STRING, SC_CLOSE, "Close")
+            else:
+                MF_STRING = 0x0000
+                MF_SEPARATOR = 0x0800
+                ID_CHAT = 0x1001
+                ID_EXIT = 0x1002
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_SEPARATOR, 0, None)
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_STRING, ID_CHAT, "Chat")
+                ctypes.windll.user32.AppendMenuW(hmenu, MF_STRING, ID_EXIT, "Exit")
+            TPM_LEFTALIGN = 0x0000
+            TPM_RETURNCMD = 0x0100
+            cmd = ctypes.windll.user32.TrackPopupMenu(
+                hmenu,
+                TPM_LEFTALIGN | TPM_RETURNCMD,
+                x,
+                y,
+                0,
+                self._hwnd,
+                None,
+            )
+            if cmd == ID_CHAT:
+                self._on_chat()
+            elif cmd == ID_EXIT:
+                self._on_quit()
+            elif cmd:
+                WM_SYSCOMMAND = 0x0112
+                ctypes.windll.user32.SendMessageW(self._hwnd, WM_SYSCOMMAND, cmd, 0)
+            if menu_owned:
+                ctypes.windll.user32.DestroyMenu(hmenu)
+        except Exception:
+            return
+
+    def _on_ctrl_down(self) -> None:
+        self._ctrl_down = True
+
+    def _on_ctrl_up(self) -> None:
+        self._ctrl_down = False
+
+    def _close_menu(self) -> None:
+        if self._menu:
+            self._menu.destroy()
+            self._menu = None
+
+    def _on_menu_chat(self) -> None:
+        self._close_menu()
+        self._on_chat()
+
+    def _on_menu_exit(self) -> None:
+        self._close_menu()
+        self._on_quit()
 
     def _get_menu_pos(self):
         try:

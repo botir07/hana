@@ -69,8 +69,6 @@ class MainWindow(QMainWindow):
         menu = QMenu(menu_btn)
         set_key_action = menu.addAction("Set OpenRouter API Key")
         set_key_action.triggered.connect(self._on_set_api_key)
-        set_model_action = menu.addAction("Set OpenRouter Model")
-        set_model_action.triggered.connect(self._on_set_model)
         menu_btn.setMenu(menu)
         menu_btn.setPopupMode(QToolButton.InstantPopup)
 
@@ -198,17 +196,6 @@ class MainWindow(QMainWindow):
     def _on_set_api_key(self) -> None:
         if self._prompt_api_key():
             QMessageBox.information(self, "API Key", "OpenRouter API key saved.")
-
-    def _on_set_model(self) -> None:
-        model, ok = QInputDialog.getText(
-            self,
-            "OpenRouter Model",
-            "Enter OpenRouter model id:",
-        )
-        model = model.strip()
-        if ok and model:
-            self._agent.set_model(model)
-            QMessageBox.information(self, "Model", "OpenRouter model saved.")
 
     def _prompt_api_key(self) -> bool:
         api_key, ok = QInputDialog.getText(
