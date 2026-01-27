@@ -26,6 +26,12 @@ class _WinRect(ctypes.Structure):
 class _PandaApp(ShowBase):
     def __init__(self, model_path: str, on_chat, on_quit):
         # Panda3D oynasini Qt ichida ishlatish uchun alohida window ochmaslikka harakat qilamiz
+        model_dir = os.path.dirname(model_path)
+        if model_dir:
+            loadPrcFileData("", f"model-path {model_dir}")
+            tex_dir = os.path.join(model_dir, "Textures")
+            if os.path.isdir(tex_dir):
+                loadPrcFileData("", f"model-path {tex_dir}")
         loadPrcFileData("", "window-type onscreen")
         loadPrcFileData("", "win-size 520 700")
         loadPrcFileData("", "framebuffer-alpha 1")
@@ -242,10 +248,17 @@ class _PandaApp(ShowBase):
                     return False
             p = Filename.fromOsSpecific(model_path)
             actor = None
-            try:
-                actor = Actor(p)
-            except Exception:
-                actor = None
+            anims = self._find_anims(model_path)
+            if anims:
+                try:
+                    actor = Actor(p, anims)
+                except Exception:
+                    actor = None
+            if actor is None:
+                try:
+                    actor = Actor(p)
+                except Exception:
+                    actor = None
             if actor and actor.getAnimNames():
                 anim_name = actor.getAnimNames()[0]
                 actor.loop(anim_name)
@@ -265,6 +278,37 @@ class _PandaApp(ShowBase):
             return True
         self._model_error = "Model file not found."
         return False
+
+    def _find_anims(self, model_path: str) -> dict:
+        model_dir = os.path.dirname(model_path)
+        if not model_dir or not os.path.isdir(model_dir):
+            return {}
+        base_name = os.path.basename(model_path).lower()
+        candidates = []
+        try:
+            for name in os.listdir(model_dir):
+                if not name.lower().endswith(".fbx"):
+                    continue
+                if name.lower() == base_name:
+                    continue
+                candidates.append(name)
+        except Exception:
+            return {}
+        if not candidates:
+            return {}
+
+        def _score(name: str) -> tuple:
+            lower = name.lower()
+            return (
+                "walk" not in lower,
+                "run" not in lower,
+                "idle" not in lower,
+                len(lower),
+            )
+
+        candidates = sorted(candidates, key=_score)
+        anim_name = candidates[0]
+        return {"walk": os.path.join(model_dir, anim_name)}
 
     def _fit_model(self) -> None:
         if not self.model:
@@ -378,16 +422,16 @@ class _PandaApp(ShowBase):
                     if self._last_cursor is not None:
                         dx = pos[0] - self._last_cursor[0]
                         dy = pos[1] - self._last_cursor[1]
-                        self._current_h += dx * 0.15
-                        self._current_p += dy * 0.12
+                        self._current_h -= dx * 0.15
+                        self._current_p -= dy * 0.12
                         self._current_p = max(-40.0, min(40.0, self._current_p))
                     self._last_cursor = pos
             else:
                 offset = self._get_cursor_offset()
                 if offset:
                     dx, dy = offset
-                    target_h = -dx * self._max_heading
-                    target_p = -dy * self._max_pitch
+                    target_h = dx * self._max_heading
+                    target_p = dy * self._max_pitch
                 else:
                     target_h = 0.0
                     target_p = 0.0

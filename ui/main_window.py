@@ -1,4 +1,5 @@
 from PySide6.QtCore import Qt, QPoint, QTimer, QThread, Signal
+from PySide6.QtGui import QAction, QActionGroup, QTextCursor
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QInputDialog,
@@ -50,6 +51,7 @@ class MainWindow(QMainWindow):
         self._config = Config()
         self._executor = Executor()
         self._worker = None
+        self._request_timeout_ms = 20000
         self._drag_offset = QPoint()
         self._avatar_window = None
         self._tts = TTSPlayer(self._config.tts_voice)
@@ -69,8 +71,20 @@ class MainWindow(QMainWindow):
         menu = QMenu(menu_btn)
         set_key_action = menu.addAction("Set OpenRouter API Key")
         set_key_action.triggered.connect(self._on_set_api_key)
+        language_menu = menu.addMenu("Language")
+        self._language_group = QActionGroup(self)
+        self._language_group.setExclusive(True)
+        self._language_actions = {}
+        for label, key in (("English", "english"), ("Russian", "russian"), ("Uzbek", "uzbek")):
+            action = QAction(label, self, checkable=True)
+            action.setData(key)
+            self._language_group.addAction(action)
+            language_menu.addAction(action)
+            self._language_actions[key] = action
+        self._language_group.triggered.connect(self._on_language_changed)
         menu_btn.setMenu(menu)
         menu_btn.setPopupMode(QToolButton.InstantPopup)
+        self._sync_language_menu()
 
         title = QLabel("AIRI")
         title.setStyleSheet("color: white; font-weight: 600;")
@@ -133,6 +147,8 @@ class MainWindow(QMainWindow):
 
     def _append_chat(self, role: str, message: str) -> None:
         self._chat.append(f"{role}: {message}")
+        self._chat.moveCursor(QTextCursor.End)
+        self._chat.ensureCursorVisible()
         if role == "AIRI":
             self._tts.speak(message)
 
@@ -154,8 +170,12 @@ class MainWindow(QMainWindow):
         self._worker.finished.connect(self._on_agent_result)
         self._worker.failed.connect(self._on_agent_error)
         self._worker.start()
+        QTimer.singleShot(self._request_timeout_ms, lambda: self._on_agent_timeout(self._worker))
 
     def _on_agent_result(self, result: dict) -> None:
+        if self.sender() is not self._worker:
+            return
+        self._worker = None
         self._set_busy(False)
         if result.get("type") == "reply":
             self._append_chat("AIRI", result.get("message", ""))
@@ -170,9 +190,22 @@ class MainWindow(QMainWindow):
         self._append_chat("AIRI", "Unexpected response from agent.")
 
     def _on_agent_error(self, message: str) -> None:
+        if self.sender() is not self._worker:
+            return
+        self._worker = None
         self._set_busy(False)
         self._set_avatar_state("error")
         QMessageBox.critical(self, "Agent Error", message)
+
+    def _on_agent_timeout(self, worker: QThread) -> None:
+        if worker is not self._worker:
+            return
+        if not worker or not worker.isRunning():
+            return
+        self._worker = None
+        self._set_busy(False)
+        self._append_chat("AIRI", "Request timed out. Please try again.")
+        self._set_avatar_state("idle")
 
     def _handle_action(self, result: dict) -> None:
         action = result.get("action")
@@ -196,6 +229,24 @@ class MainWindow(QMainWindow):
     def _on_set_api_key(self) -> None:
         if self._prompt_api_key():
             QMessageBox.information(self, "API Key", "OpenRouter API key saved.")
+
+    def _on_language_changed(self, action: QAction) -> None:
+        language = action.data()
+        if not language:
+            return
+        self._agent.set_language(language)
+        self._config.language = language
+        voice = Config.default_voice(language)
+        self._config.tts_voice = voice
+        self._tts.set_voice(voice)
+
+    def _sync_language_menu(self) -> None:
+        current = (self._config.language or "english").strip().lower()
+        action = self._language_actions.get(current)
+        if action:
+            action.setChecked(True)
+        else:
+            self._language_actions["english"].setChecked(True)
 
     def _prompt_api_key(self) -> bool:
         api_key, ok = QInputDialog.getText(

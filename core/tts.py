@@ -11,6 +11,10 @@ class TTSPlayer:
         self._voice = voice
         self._lock = threading.Lock()
 
+    def set_voice(self, voice: str) -> None:
+        if voice:
+            self._voice = voice
+
     def speak(self, text: str) -> None:
         if not text or not text.strip():
             return

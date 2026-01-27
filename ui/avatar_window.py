@@ -17,7 +17,7 @@ class AvatarWindow(QWidget):
         self.setAttribute(Qt.WA_TranslucentBackground, True)
 
         base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-        model_path = os.path.join(base_dir, "assets", "arknights_endfield_-laevatain-.glb")
+        model_path = os.path.join(base_dir, "assets", "chisa", "Chisa.fbx")
         self._avatar = AvatarView(model_path, on_chat=self._toggle_chat, on_quit=self._quit)
         if hasattr(self._chat_window, "set_avatar_window"):
             self._chat_window.set_avatar_window(self)
