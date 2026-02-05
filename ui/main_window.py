@@ -1,3 +1,4 @@
+import time
 from PySide6.QtCore import Qt, QPoint, QTimer, QThread, Signal
 from PySide6.QtGui import QAction, QActionGroup, QTextCursor
 from PySide6.QtWidgets import (
@@ -20,6 +21,7 @@ from core.config import Config
 from core.executor import Executor
 from core.tts import TTSPlayer
 from ui.confirm_dialog import ConfirmDialog
+from core.waifu import WaifuLayer
 
 
 class AgentWorker(QThread):
@@ -55,6 +57,11 @@ class MainWindow(QMainWindow):
         self._drag_offset = QPoint()
         self._avatar_window = None
         self._tts = TTSPlayer(self._config.tts_voice)
+        self._waifu = WaifuLayer(self._config)
+        self._last_interaction = time.monotonic()
+        self._silence_timer = QTimer(self)
+        self._silence_timer.timeout.connect(self._on_silence_tick)
+        self._silence_timer.start(60_000)  # check each minute
 
         self._chat = QTextEdit()
         self._chat.setReadOnly(True)
@@ -145,17 +152,25 @@ class MainWindow(QMainWindow):
         self._send_btn.setEnabled(not busy)
         self._input.setEnabled(not busy)
 
-    def _append_chat(self, role: str, message: str) -> None:
+    def _append_chat(self, role: str, message: str, mood: str | None = None) -> None:
+        if not message:
+            return
         self._chat.append(f"{role}: {message}")
         self._chat.moveCursor(QTextCursor.End)
         self._chat.ensureCursorVisible()
         if role == "AIRI":
-            self._tts.speak(message)
+            self._set_avatar_state("speaking")
+            style = self._waifu.style_tag()
+            self._tts.speak(message, style=style, on_done=lambda: QTimer.singleShot(600, self._after_speech))
+            self._last_interaction = time.monotonic()
+        elif role == "User":
+            self._last_interaction = time.monotonic()
 
     def _on_send(self) -> None:
         text = self._input.text().strip()
         if not text:
             return
+        self._waifu.update_event("user_input", time.time())
         self._set_avatar_state("listening")
         if not self._agent.has_api_key():
             if not self._prompt_api_key():
@@ -178,9 +193,8 @@ class MainWindow(QMainWindow):
         self._worker = None
         self._set_busy(False)
         if result.get("type") == "reply":
-            self._append_chat("AIRI", result.get("message", ""))
-            self._set_avatar_state("speaking")
-            QTimer.singleShot(2000, lambda: self._set_avatar_state("idle"))
+            msg = self._waifu.filter_reply(result.get("message", ""))
+            self._append_chat("AIRI", msg, mood=self._waifu.mood())
             return
 
         if result.get("type") == "action":
@@ -207,12 +221,20 @@ class MainWindow(QMainWindow):
         self._append_chat("HANA", "Request timed out. Please try again.")
         self._set_avatar_state("idle")
 
+    def _on_silence_tick(self) -> None:
+        now = time.monotonic()
+        silence = now - self._last_interaction
+        msg = self._waifu.tick(silence_sec=silence, now=time.time())
+        if msg and not self._worker:
+            styled = self._waifu.filter_reply(msg)
+            self._append_chat("AIRI", styled, mood=self._waifu.mood())
+
     def _handle_action(self, result: dict) -> None:
         action = result.get("action")
         args = result.get("args", {})
         preface = result.get("message")
         if preface:
-            self._append_chat("HANA", preface)
+            self._append_chat("HANA", self._waifu.filter_reply(preface))
 
         outcome = self._executor.execute_action(action, args, confirmed=False)
         if outcome.get("status") == "needs_confirmation":
@@ -223,7 +245,7 @@ class MainWindow(QMainWindow):
                 return
             outcome = self._executor.execute_action(action, args, confirmed=True)
 
-        self._append_chat("AIRI", outcome.get("message", "Action completed."))
+        self._append_chat("AIRI", self._waifu.filter_reply(outcome.get("message", "Action completed.")), mood=self._waifu.mood())
         QTimer.singleShot(2000, lambda: self._set_avatar_state("idle"))
 
     def _on_set_api_key(self) -> None:
@@ -260,6 +282,9 @@ class MainWindow(QMainWindow):
             return False
         self._agent.set_api_key(api_key)
         return True
+
+    def _after_speech(self) -> None:
+        self._set_avatar_state(self._waifu.idle_state())
 
     def toggle_visible(self) -> None:
         if self.isVisible():

@@ -11,6 +11,7 @@ HANA is an early-stage desktop assistant with a floating avatar and chat UI.
 - 3D avatar window (Panda3D) if `HANA_AVATAR_MODE=3d`
 - Chat window (Qt/PySide6)
 - Right-click system menu on the avatar (Ctrl + right-click)
+- Waifu layer: mood + proactive companion lines (config: `HANA_PERSONA`, default `waifu`)
 
 ## Requirements
 - Windows 11
