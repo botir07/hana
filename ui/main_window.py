@@ -187,7 +187,7 @@ class MainWindow(QMainWindow):
             self._handle_action(result)
             return
 
-        self._append_chat("AIRI", "Unexpected response from agent.")
+        self._append_chat("HANA", "Unexpected response from agent.")
 
     def _on_agent_error(self, message: str) -> None:
         if self.sender() is not self._worker:
@@ -204,7 +204,7 @@ class MainWindow(QMainWindow):
             return
         self._worker = None
         self._set_busy(False)
-        self._append_chat("AIRI", "Request timed out. Please try again.")
+        self._append_chat("HANA", "Request timed out. Please try again.")
         self._set_avatar_state("idle")
 
     def _handle_action(self, result: dict) -> None:
@@ -212,7 +212,7 @@ class MainWindow(QMainWindow):
         args = result.get("args", {})
         preface = result.get("message")
         if preface:
-            self._append_chat("AIRI", preface)
+            self._append_chat("HANA", preface)
 
         outcome = self._executor.execute_action(action, args, confirmed=False)
         if outcome.get("status") == "needs_confirmation":

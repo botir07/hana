@@ -29,7 +29,7 @@
 - 2026-01-24: Added shader auto, animation loop attempt, and bobbing motion for Panda3D avatar.
 - 2026-01-24: Removed unused avatar window hook from main startup to prevent AttributeError.
 - 2026-01-24: Added step reentrancy guard and reduced Panda3D tick rate.
-- 2026-01-24: Updated system prompt to AIRI persona and clarified action JSON schema.
+- 2026-01-24: Updated system prompt to HANA persona and clarified action JSON schema.
 - 2026-01-24: Rebuilt chat overlay UI, added TTS, and hooked avatar reaction states.
 - 2026-01-24: Added Panda3D right-click menu and reaction state controls.
 - 2026-01-24: Updated dependencies for TTS and Panda3D support.

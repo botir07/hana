@@ -44,12 +44,14 @@ class Agent:
             return quick_action
 
         language_instruction = self._language_instruction()
+        persona_instruction = self._persona_instruction()
         system_prompt = (
-            "You are AIRI, an advanced real-time AI assistant and autonomous agent. "
+            "You are HANA, an advanced real-time AI assistant and autonomous agent. "
             "Core purpose: interact naturally through text, understand intent, and use tools safely. "
             "Personality: calm, intelligent, friendly but professional, short and clear by default, "
             "match user tone, never robotic. "
             f"{language_instruction} "
+            f"{persona_instruction} "
             "Thinking model: decide normal response vs action vs confirmation; validate safety; "
             "choose tool; execute; respond with result. Do not reveal internal reasoning unless asked. "
             "Memory: remember user preferences and context during the session. "
@@ -261,6 +263,16 @@ class Agent:
         if language == "uzbek":
             return "Reply to the user in Uzbek (Latin script) unless they ask for another language."
         return "Reply to the user in English unless they ask for another language."
+
+    def _persona_instruction(self) -> str:
+        persona = (getattr(self._config, "persona", "assistant") or "assistant").strip().lower()
+        if persona in ("waifu", "companion", "girlfriend", "vtuber"):
+            return (
+                "Role style: affectionate, playful VTuber companion with light teasing; supportive and warm; "
+                "keep responses concise and emotionally expressive (emojis or kaomoji are optional but do not overuse). "
+                "Stay PG-13: avoid explicit content; respect boundaries and consent; no real-world relationship promises."
+            )
+        return ""
 
     def _rule_based_action(self, text: str) -> dict | None:
         if not text:

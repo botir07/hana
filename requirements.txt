@@ -4,3 +4,9 @@ edge-tts
 playsound==1.2.2
 panda3d
 panda3d-gltf
+mss
+pillow
+pytesseract
+chromadb
+sentence-transformers
+pypdf

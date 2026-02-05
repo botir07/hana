@@ -4,6 +4,7 @@ import builtins
 import ctypes
 import math
 import time
+import random
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QWidget, QVBoxLayout
 
@@ -92,6 +93,13 @@ class _PandaApp(ShowBase):
         self._auto_walk_started = False
         self._last_step_time = time.monotonic()
         self._joint_anim = []
+        self._jaw_phase = 0.0
+        self._jaw_open = 0.0
+        self._blink_state = 0.0
+        self._blink_until = 0.0
+        self._next_blink_at = time.monotonic() + random.uniform(2.5, 4.8)
+        self._jaw_target_amp = 6.0
+        self._blink_boost = 0.15
 
         # Offscreen buffer yaratib, keyin Qtga berish murakkabroq.
         # Shuning uchun eng tez MVP: Panda3D alohida oynada render qiladi.
@@ -493,7 +501,17 @@ class _PandaApp(ShowBase):
 
     def _classify_joint(self, name: str):
         lower = name.lower()
-        if "upperarm" in lower or ("arm" in lower and "fore" not in lower and "hand" not in lower):
+        if "jaw" in lower or "mouth" in lower:
+            kind = "jaw"
+        elif "eye" in lower and "brow" not in lower and "lid" not in lower:
+            kind = "eye"
+        elif "lid" in lower or "eyelid" in lower:
+            kind = "eyelid"
+        elif "head" in lower:
+            kind = "head"
+        elif "neck" in lower:
+            kind = "neck"
+        elif "upperarm" in lower or ("arm" in lower and "fore" not in lower and "hand" not in lower):
             kind = "arm"
         elif "forearm" in lower or "lowerarm" in lower:
             kind = "forearm"
@@ -707,6 +725,22 @@ class _PandaApp(ShowBase):
         else:
             self._bob_amp = 0.08
             self._al.setColor((0.35, 0.35, 0.4, 1))
+        # Jaw amplitude and blink cadence tuned for VTuber-like expressiveness
+        if state == "speaking":
+            self._jaw_target_amp = 18.0
+            self._blink_boost = 0.0
+        elif state == "listening":
+            self._jaw_target_amp = 8.0
+            self._blink_boost = 0.2
+        elif state == "thinking":
+            self._jaw_target_amp = 6.0
+            self._blink_boost = 0.4
+        elif state == "error":
+            self._jaw_target_amp = 2.0
+            self._blink_boost = 0.0
+        else:
+            self._jaw_target_amp = 5.0
+            self._blink_boost = 0.15
     def _get_cursor_offset(self):
         if not self._hwnd:
             return None
@@ -773,6 +807,7 @@ class _PandaApp(ShowBase):
         if self._auto_walk and not self._auto_walk_started:
             self._start_auto_walk()
         self._advance_walk(dt)
+        self._update_face(dt, now)
         self._animate_joints(now, walking=self._walk_target is not None)
         if self.model:
             self.tilt = (self.tilt + 2.0) % 360.0
@@ -830,6 +865,26 @@ class _PandaApp(ShowBase):
         except Exception:
             return
 
+    def _update_face(self, dt: float, now: float) -> None:
+        # Jaw flap for speech-like movement
+        speed = 6.0 if self._state == "speaking" else 2.8
+        self._jaw_phase += dt * speed * math.pi * 2.0
+        amp = self._jaw_target_amp if hasattr(self, "_jaw_target_amp") else 6.0
+        mouth = abs(math.sin(self._jaw_phase)) * amp
+        if self._state != "speaking":
+            mouth *= 0.6
+        self._jaw_open = mouth
+
+        # Blink timing
+        if now >= self._next_blink_at:
+            self._blink_until = now + 0.16
+            self._next_blink_at = now + random.uniform(2.5, 5.0) - self._blink_boost
+        if self._blink_until > now:
+            phase = 1.0 - max(0.0, min(1.0, (self._blink_until - now) / 0.16))
+            self._blink_state = math.sin(phase * math.pi)
+        else:
+            self._blink_state = 0.0
+
     def _animate_joints(self, t: float, walking: bool = False) -> None:
         if not self._joint_anim:
             return
@@ -869,6 +924,29 @@ class _PandaApp(ShowBase):
             elif kind == "shoulder":
                 amp = 6.0 if walking else 3.0
                 pitch = math.sin(phase) * amp * (side_mult or 1)
+            elif kind == "neck":
+                pitch = math.sin(phase * 0.6) * 3.0 + self._current_p * 0.12
+                node.setHpr(base.x + self._current_h * 0.12, base.y + pitch, base.z)
+                continue
+            elif kind == "head":
+                pitch = math.sin(phase * 0.5 + 0.3) * 2.5 + self._current_p * 0.2
+                yaw = self._current_h * 0.25
+                node.setHpr(base.x + yaw, base.y + pitch, base.z)
+                continue
+            elif kind == "jaw":
+                mouth = getattr(self, "_jaw_open", 0.0)
+                node.setHpr(base.x, base.y - mouth, base.z)
+                continue
+            elif kind in ("eye", "eyelid"):
+                blink = getattr(self, "_blink_state", 0.0)
+                pitch = -blink * 25.0
+                if kind == "eye":
+                    pitch += self._current_p * 0.08
+                    yaw = self._current_h * 0.08
+                    node.setHpr(base.x + yaw, base.y + pitch, base.z)
+                else:
+                    node.setHpr(base.x, base.y + pitch, base.z)
+                continue
             else:
                 continue
             node.setHpr(base.x, base.y + pitch, base.z)

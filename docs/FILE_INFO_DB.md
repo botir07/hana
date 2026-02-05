@@ -62,7 +62,7 @@
 - ui\\avatar_view.py: Panda3D avatar view widget. Changed: enabled shader auto, animation attempt, and bobbing motion.
 - main.py: Entry point for the Qt application. Changed: removed avatar window hook to avoid missing method error.
 - ui\\avatar_view.py: Panda3D avatar view widget. Changed: added step guard and reduced tick rate.
-- core\\agent.py: OpenRouter client and JSON parsing. Changed: updated system prompt to AIRI persona and action schema.
+- core\\agent.py: OpenRouter client and JSON parsing. Changed: updated system prompt to HANA persona and action schema.
 - ui\\main_window.py: Chat overlay window. Changed: rebuilt overlay UI, added TTS, and avatar state hooks.
 - ui\\avatar_view.py: Panda3D avatar view widget. Changed: added right-click menu and reaction state controls.
 - ui\\avatar_window.py: Avatar controller window. Changed: added TTS/menu callbacks and quit handling.
